@@ -4,14 +4,50 @@
  *	В хранилище можно вкладывать валюту через deposit(Currency)
  *	Из хранлилища, можно переводить валюту через transfer(Currency, Vault)
 */
-import { Currency } from "../task_1";
+import {Currency} from "../task_1";
 
-export class Vault implements ISecureVaultRequisites{
+export class Vault implements ISecureVaultRequisites {
 	public id: number;
 	public store: Set<Currency> = new Set<Currency>()
+	
+	withdraw(currency: Currency): void {
+		let hasCurrency = false;
+		this.store.forEach((c: Currency) => {
+			if (c.name === currency.name) {
+				if (currency.value > c.value) {
+					throw new Error("the Vault doesn't have enough currency");
+				}
+				
+				c.value -= currency.value;
+				hasCurrency = true;
+			}
+		});
+		
+		if (!hasCurrency) {
+			throw new Error("the Vault doesn't contain this currency")
+		}
+	}
+	
+	public deposit(currency: Currency): void {
+		let hasCurrency = false;
+		this.store.forEach((c: Currency) => {
+			if (c.name === currency.name) {
+				c.value += currency.value;
+				hasCurrency = true;
+			}
+		});
+		
+		if (!hasCurrency) {
+			this.store.add(currency);
+		}
+	}
+	
+	public transfer(currency: Currency, vault: Vault): void {
+		this.withdraw(currency);
+		vault.deposit(currency);
+	}
 }
 
-
-export interface ISecureVaultRequisites{
+export interface ISecureVaultRequisites {
 	id: number
 }
