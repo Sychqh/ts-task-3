@@ -7,10 +7,48 @@
  * Example new Currency("DOGE", 12.5, "satoshi")
  */
 
-export class Currency{
-
+export class Currency {
+    private _name: string;
+    private _value: number;
+    private _unit: string;
+    private _type: CurrencyType;
+    
+    constructor(name: string, value: number, unit: string) {
+        if (!name || value < 0 || value === undefined || !isFinite(value) || !unit) {
+            throw new Error("Incorrect input arguments");
+        }
+        this._name = name;
+        this._value = value;
+        this._unit = unit;
+    }
+    
+    public get name() {
+        return this._name;
+    }
+    
+    public get type() {
+        return this._type;
+    }
+    
+    public get unit() {
+        return this._unit;
+    }
+    
+    public get value() {
+        return this._value;
+    }
+    
+    public set value(newValue: number) {
+        if (newValue < 0 || newValue === undefined || !isFinite(newValue)) {
+            throw new Error("New value must be a number higher than zero");
+        }
+        
+        this._value = newValue;
+    }
 }
 
 export enum CurrencyType {
-
+    Material,
+    CryptoCurrency,
+    MetalDeposit
 }
