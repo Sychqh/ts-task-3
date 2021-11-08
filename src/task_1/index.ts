@@ -26,10 +26,6 @@ export class Currency {
         return this._name;
     }
     
-    public get type() {
-        return this._type;
-    }
-    
     public get unit() {
         return this._unit;
     }
@@ -44,6 +40,18 @@ export class Currency {
         }
         
         this._value = newValue;
+    }
+    
+    public get type() {
+        return this._type;
+    }
+    
+    public set type(newType: CurrencyType) {
+        if (newType === undefined) {
+            throw new Error("Incorrect input argument");
+        }
+        
+        this._type = newType;
     }
 }
 
